@@ -32,7 +32,12 @@ async function run() {
     // await client.connect();
 
     const careerDatabaseCollection = client.db("careerDB").collection("jobs");
+    const applicationDatabaseCollection = client.db("applicationDB").collection("applications")
 
+
+
+
+    // job related api's
     app.get('/jobs',async (req,res)=>{
       const cursor = careerDatabaseCollection.find()
       const result = await cursor.toArray()
@@ -44,6 +49,21 @@ async function run() {
       const id = req.params.id;
       const query = {_id : new ObjectId(id)}
       const result = await careerDatabaseCollection.findOne(query)
+      res.send(result)
+    })
+
+
+
+
+    // job related api's
+    app.post('/applications',async(req,res)=>{
+       const data = req.body;
+       const result = await applicationDatabaseCollection.insertOne(data)
+       res.send(result)
+    })
+    app.get('/applications',async(req,res)=>{
+       const cursor = applicationDatabaseCollection.find()
+      const result = await cursor.toArray()
       res.send(result)
     })
 
