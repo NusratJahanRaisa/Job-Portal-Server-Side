@@ -61,11 +61,30 @@ async function run() {
        const result = await applicationDatabaseCollection.insertOne(data)
        res.send(result)
     })
+
+
+
+
+    // http://localhost:5000/applications?applicant=jahan@gmail.com
     app.get('/applications',async(req,res)=>{
-       const cursor = applicationDatabaseCollection.find()
-      const result = await cursor.toArray()
+      const email = req.query.email
+      const query = {
+        applicant : email
+      }
+
+      const result = await applicationDatabaseCollection.find(query).toArray()
       res.send(result)
     })
+
+
+
+
+    // http://localhost:5000/applications
+    // app.get('/applications',async(req,res)=>{
+    //    const cursor = applicationDatabaseCollection.find()
+    //   const result = await cursor.toArray()
+    //   res.send(result)
+    // })
 
 
 
