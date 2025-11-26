@@ -52,16 +52,23 @@ async function run() {
       res.send(result)
     })
 
+    app.post('/jobs',async(req,res)=>{
+      const data = req.body
+      const result = await careerDatabaseCollection.insertOne(data)
+      res.send(result)
+    })
 
 
 
-    // job related api's
+
+
+
+    // job application related api's
     app.post('/applications',async(req,res)=>{
        const data = req.body;
        const result = await applicationDatabaseCollection.insertOne(data)
        res.send(result)
     })
-
 
 
 
