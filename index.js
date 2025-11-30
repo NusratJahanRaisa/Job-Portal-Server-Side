@@ -37,9 +37,18 @@ async function run() {
 
 
 
-    // job related api's
+    // job getting/posting/deleting/editing related api's
     app.get('/jobs',async (req,res)=>{
-      const cursor = careerDatabaseCollection.find()
+      
+      const email = req.query.email;
+
+      const query = {}
+      if(email){
+         query.hr_email = email;
+      }
+      
+
+      const cursor = careerDatabaseCollection.find(query)
       const result = await cursor.toArray()
       res.send(result)
     })
@@ -63,7 +72,9 @@ async function run() {
 
 
 
-    // job application related api's
+
+
+    // (job) Application related api's
     app.post('/applications',async(req,res)=>{
        const data = req.body;
        const result = await applicationDatabaseCollection.insertOne(data)
@@ -72,7 +83,7 @@ async function run() {
 
 
 
-    // http://localhost:5000/applications?applicant=jahan@gmail.com
+    // http://localhost:5000/applications?applicant=jahan@gmail.com-->> Q U E R Y    P A R A M S
     app.get('/applications',async(req,res)=>{
       const email = req.query.email
       const query = {
@@ -91,6 +102,18 @@ async function run() {
         application.company_logo = job.company_logo
       }
 
+      res.send(result)
+    })
+
+
+
+    // view total job application for a particular job form recruiter POV
+    app.get('/applications/job/:job_id',async(req,res)=>{
+      const job_id = req.params.job_id;
+      const query = {
+        jobId : job_id
+      }
+      const result = await applicationDatabaseCollection.find(query).toArray()
       res.send(result)
     })
 
