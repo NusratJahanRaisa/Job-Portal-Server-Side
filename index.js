@@ -118,6 +118,20 @@ async function run() {
     })
 
 
+    app.patch('/applications/:id',async(req,res)=>{
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const updateDoc = {
+        $set : {
+          status : req.body.status
+        }
+      }
+
+      const result = await applicationDatabaseCollection.updateOne(filter,updateDoc)
+      res.send(result)
+    })
+
+
 
 
     // http://localhost:5000/applications
